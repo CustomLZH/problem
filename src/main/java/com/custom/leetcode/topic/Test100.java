@@ -1,8 +1,8 @@
 package com.custom.leetcode.topic;
 
-import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
  *
- * 状态：未完成
+ * 状态：完成
  * @Author: Custom
  * @Date: 2021/1/24 17:48
  * @Version: 1.0
@@ -22,7 +22,16 @@ public class Test100 {
 
         Test100 test100 = new Test100();
 
-        System.out.println(test100.isSameTree(autoGenerateTree(), autoGenerateTree()));
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(3);
+
+        TreeNode treeNode1 = new TreeNode(1);
+        treeNode1.left = new TreeNode(2);
+        treeNode1.right = new TreeNode(3);
+
+
+        System.out.println(test100.isSameTree(treeNode, treeNode1));
 
     }
 
@@ -33,8 +42,8 @@ public class Test100 {
             return true;
         }
 
-        List<TreeNode> listOne =  new ArrayList<>();
-        List<TreeNode> listTwo = new ArrayList<>();
+        List<Integer> listOne =  new ArrayList<>();
+        List<Integer> listTwo = new ArrayList<>();
 
         listTree(p, listOne);
         listTree(q, listTwo);
@@ -45,14 +54,14 @@ public class Test100 {
 
 
         for (int i = 0; i < listOne.size(); i++) {
-            TreeNode treeNode = listOne.get(i);
-            TreeNode treeNode1 = listTwo.get(i);
+            Integer treeNode = listOne.get(i);
+            Integer treeNode1 = listTwo.get(i);
             if (treeNode == null || treeNode1 == null) {
-                if (treeNode != treeNode1) {
+                if (!Objects.equals(treeNode, treeNode1)) {
                     return false;
                 }
             }else {
-                if (treeNode.val != treeNode1.val) {
+                if (!treeNode.equals(treeNode1)) {
                     return false;
                 }
             }
@@ -65,11 +74,15 @@ public class Test100 {
     }
 
 
-
-    public static void listTree(TreeNode p, List<TreeNode> list) {
+    /**
+     * 树转数组
+     * @param p
+     * @param list
+     */
+    public static void listTree(TreeNode p, List<Integer> list) {
         if (p != null) {
+            list.add(p.val);
             listTree(p.left, list);
-            list.add(p);
             listTree(p.right, list);
         }else {
             list.add(null);
@@ -78,10 +91,9 @@ public class Test100 {
 
     /**
      * 自动生成树
-     * @return
+     * @return 随机数
      */
     public static TreeNode autoGenerateTree() {
-        // A-Z的ASCII码是65-90，a-z的ASCII码是97-122
         Random random = new Random();
         int treeLength = random.nextInt(17) + 3;
 
